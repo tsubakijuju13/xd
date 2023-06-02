@@ -1,0 +1,30 @@
+version: '3.0'
+
+services:
+
+  flaskweb:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - dbpostgres
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./.env
+
+
+  dbpostgres:
+    image: "tsubaki/db"
+    container_name: "postgres_flask"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata 
+    volumes:
+      - db_postgres:/var/lib/postgresql/data
+
+networks:
+  xdnet:
+
+volumes:
+  db_postgres:
